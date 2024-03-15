@@ -1,0 +1,118 @@
+@import url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  font-family: "Zen Maru Gothic", serif;
+  @apply text-dark font-bold;
+}
+
+select,
+input[type="range"] {
+  @apply cursor-pointer;
+}
+
+input[type="range"] {
+  @apply h-1.5 rounded-[0.1875rem] bg-dark appearance-none;
+
+  &::-webkit-slider-thumb {
+    @apply w-5 h-5 rounded-[50%] bg-accent shadow-none appearance-none;
+  }
+  &::-moz-range-thumb {
+    @apply w-5 h-5 rounded-[50%] bg-accent border-none;
+  }
+}
+
+input[type="text"]::placeholder,
+textarea::placeholder {
+  @apply text-dark opacity-30 transition-colors;
+}
+
+input[type="text"].placeholder-light::placeholder,
+textarea.placeholder-light::placeholder {
+  @apply text-light opacity-50;
+}
+
+dialog {
+  @apply overflow-visible;
+
+  &::backdrop {
+    @apply bg-transparent;
+  }
+}
+
+button {
+  &:disabled {
+    @apply cursor-not-allowed;
+  }
+}
+
+body {
+  @apply bg-main;
+
+  &.is-firefox {
+    * {
+      scrollbar-width: thin;
+    }
+    .scrollbar-light {
+      scrollbar-color: #F4FAFA transparent;
+    }
+    .scrollbar-dark {
+      scrollbar-color: #3E7F7D transparent;
+    }
+  }
+
+  &:not(.is-firefox) {
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background-color: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-corner {
+      background-color: transparent;
+    }
+    .scrollbar-light {
+      &::-webkit-scrollbar-thumb {
+        background-color: #F4FAFA;
+      }
+    }
+    .scrollbar-dark {
+      &::-webkit-scrollbar-thumb {
+        background-color: #3E7F7D;
+      }
+    }
+  }
+}
+
+#app {
+  @apply w-dvw h-dvh p-4 flex flex-col gap-4;
+}
+
+.textarea-wrapper {
+  @apply relative;
+
+  &::after {
+    @apply [content:""] w-5 h-5 absolute m-auto right-0 bottom-0 bg-dark rounded-br block pointer-events-none;
+    @apply [clip-path:polygon(100%0%,100%100%,0%100%,100%0%)];
+  }
+}
+
+.rotate-loop {
+  animation: rotate 1s linear infinite;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotateZ(0deg);
+  }
+  100% {
+    transform: rotateZ(360deg);
+  }
+}
