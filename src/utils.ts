@@ -62,3 +62,11 @@ export function readFile (file: File, mode: 'text' | 'arrayBuffer') {
     }
   })
 }
+
+export function uint8ArrayToBase64 (data: Uint8Array) {
+  return btoa(Array.from(data).map((x) => String.fromCharCode(x)).join(''))
+}
+
+export function base64ToUint8Array (data: string) {
+  return Uint8Array.from(Array.from(atob(data)).map((x) => x.charCodeAt(0)))
+}

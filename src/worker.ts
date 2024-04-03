@@ -1,10 +1,19 @@
 import { PoinoTalkEngine, schemata, utils } from 'poinotalk-engine'
+import { createStorage } from 'unstorage'
+import indexedDbDriver from 'unstorage/drivers/indexedb'
 import { z } from 'zod'
-import { checkType } from './utils'
+import { checkType, uint8ArrayToBase64, base64ToUint8Array } from './utils'
 import config from './config'
 
 const engine = new PoinoTalkEngine()
 const speakers = engine.getSpeakers()
+
+const storage = createStorage({
+  driver: indexedDbDriver({
+    dbName: `${config.appName}-${config.version}-cache`,
+    storeName: 'kvs'
+  })
+})
 
 export interface SynthData {
   analyzedData: schemata.KanaData[]
@@ -114,6 +123,30 @@ const dictSegumentFileNames = [
   'sys-21.dic'
 ]
 
+function getFileFromCache (url: string) {
+  return new Promise<ArrayBuffer | null>((resolve, reject) => {
+    storage.getItem<string>(url)
+    .then((base64) => {
+      if (base64 === null) {
+        resolve(null)
+      } else {
+        const arrayBuffer = base64ToUint8Array(base64).buffer as ArrayBuffer
+        resolve(arrayBuffer)
+      }
+    })
+    .catch(reject)
+  })
+}
+
+function setFileToCache (url: string, file: ArrayBuffer) {
+  const base64 = uint8ArrayToBase64(new Uint8Array(file))
+  return storage.setItem<string>(url, base64)
+}
+
+function clearCacheFiles () {
+  return storage.clear()
+}
+
 function checkBackend (id: string) {
   try {
     const result = utils.canUseWebGPU || utils.canUseWebGL
@@ -131,10 +164,28 @@ function init (id: string) {
       const promises = dictFileNames.map((fileName) => {
         return new Promise<{ fileName: string, data: Uint8Array }>((resolve, reject) => {
           const url = new URL(fileName, config.openjlabelDictDirURL).href
-          fetch(url, { cache: 'force-cache' })
-          .then((res) => res.arrayBuffer())
-          .then((arrayBuffer) => {
-            const buffer = new Uint8Array(arrayBuffer)
+
+          getFileFromCache(url)
+          .then((file) => {
+            if (file !== null) {
+              return file
+            } else {
+              return new Promise<ArrayBuffer>((resolve, reject) => {
+                let file: ArrayBuffer
+
+                fetch(url)
+                .then((res) => res.arrayBuffer())
+                .then((arrayBuffer) => {
+                  file = arrayBuffer
+                  return setFileToCache(url, file)
+                })
+                .then(() => resolve(file))
+                .catch(reject)
+              })
+            }
+          })
+          .then((file) => {
+            const buffer = new Uint8Array(file)
             resolve({
               fileName: fileName,
               data: buffer
@@ -148,10 +199,28 @@ function init (id: string) {
         const promises = dictSegumentFileNames.map((fileName) => {
           return new Promise<Uint8Array>((resolve, reject) => {
             const url = new URL(fileName, config.openjlabelDictDirURL).href
-            fetch(url, { cache: 'force-cache' })
-            .then((res) => res.arrayBuffer())
-            .then((arrayBuffer) => {
-              const buffer = new Uint8Array(arrayBuffer)
+
+            getFileFromCache(url)
+            .then((file) => {
+              if (file !== null) {
+                return file
+              } else {
+                return new Promise<ArrayBuffer>((resolve, reject) => {
+                  let file: ArrayBuffer
+
+                  fetch(url)
+                  .then((res) => res.arrayBuffer())
+                  .then((arrayBuffer) => {
+                    file = arrayBuffer
+                    return setFileToCache(url, file)
+                  })
+                  .then(() => resolve(file))
+                  .catch(reject)
+                })
+              }
+            })
+            .then((file) => {
+              const buffer = new Uint8Array(file)
               resolve(buffer)
             })
             .catch(reject)
@@ -202,6 +271,7 @@ function init (id: string) {
   } catch (e) {
     console.error(e)
     postMessage(id, false, e)
+    clearCacheFiles()
   }
 }
 
