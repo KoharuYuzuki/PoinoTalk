@@ -158,11 +158,45 @@ function checkBackend (id: string) {
 }
 
 function init (id: string) {
-  try {
-    engine.init()
-    .then(() => {
-      const promises = dictFileNames.map((fileName) => {
-        return new Promise<{ fileName: string, data: Uint8Array }>((resolve, reject) => {
+  engine.init()
+  .then(() => {
+    const promises = dictFileNames.map((fileName) => {
+      return new Promise<{ fileName: string, data: Uint8Array }>((resolve, reject) => {
+        const url = new URL(fileName, config.openjlabelDictDirURL).href
+
+        getFileFromCache(url)
+        .then((file) => {
+          if (file !== null) {
+            return file
+          } else {
+            return new Promise<ArrayBuffer>((resolve, reject) => {
+              let file: ArrayBuffer
+
+              fetch(url)
+              .then((res) => res.arrayBuffer())
+              .then((arrayBuffer) => {
+                file = arrayBuffer
+                return setFileToCache(url, file)
+              })
+              .then(() => resolve(file))
+              .catch(reject)
+            })
+          }
+        })
+        .then((file) => {
+          const buffer = new Uint8Array(file)
+          resolve({
+            fileName: fileName,
+            data: buffer
+          })
+        })
+        .catch(reject)
+      })
+    })
+
+    const promise = new Promise<{ fileName: string, data: Uint8Array }>((resolve, reject) => {
+      const promises = dictSegumentFileNames.map((fileName) => {
+        return new Promise<Uint8Array>((resolve, reject) => {
           const url = new URL(fileName, config.openjlabelDictDirURL).href
 
           getFileFromCache(url)
@@ -186,93 +220,58 @@ function init (id: string) {
           })
           .then((file) => {
             const buffer = new Uint8Array(file)
-            resolve({
-              fileName: fileName,
-              data: buffer
-            })
+            resolve(buffer)
           })
           .catch(reject)
         })
       })
 
-      const promise = new Promise<{ fileName: string, data: Uint8Array }>((resolve, reject) => {
-        const promises = dictSegumentFileNames.map((fileName) => {
-          return new Promise<Uint8Array>((resolve, reject) => {
-            const url = new URL(fileName, config.openjlabelDictDirURL).href
+      Promise.all(promises)
+      .then((buffers) => {
+        const totalLength = buffers.reduce((sum, buffer) => sum + buffer.length, 0)
+        const buffer = new Uint8Array(totalLength)
+        let prevEnd = 0
 
-            getFileFromCache(url)
-            .then((file) => {
-              if (file !== null) {
-                return file
-              } else {
-                return new Promise<ArrayBuffer>((resolve, reject) => {
-                  let file: ArrayBuffer
-
-                  fetch(url)
-                  .then((res) => res.arrayBuffer())
-                  .then((arrayBuffer) => {
-                    file = arrayBuffer
-                    return setFileToCache(url, file)
-                  })
-                  .then(() => resolve(file))
-                  .catch(reject)
-                })
-              }
-            })
-            .then((file) => {
-              const buffer = new Uint8Array(file)
-              resolve(buffer)
-            })
-            .catch(reject)
-          })
-        })
-
-        Promise.all(promises)
-        .then((buffers) => {
-          const totalLength = buffers.reduce((sum, buffer) => sum + buffer.length, 0)
-          const buffer = new Uint8Array(totalLength)
-          let prevEnd = 0
-
-          for (let i = 0; i < buffers.length; i++) {
-            buffer.set(buffers[i], prevEnd)
-            prevEnd += buffers[i].length
-          }
-
-          resolve({
-            fileName: 'sys.dic',
-            data: buffer
-          })
-        })
-        .catch(reject)
-      })
-
-      return Promise.all([...promises, promise])
-    })
-    .then((files) => (
-      engine.loadOpenjlabelDict(files)
-    ))
-    .then(() => (
-      engine.loadMlModels(
-        {
-          duration: new URL('duration/model.json', config.mlModelsDirURL).href,
-          f0:       new URL('f0/model.json',       config.mlModelsDirURL).href,
-          volume:   new URL('volume/model.json',   config.mlModelsDirURL).href
-        },
-        {
-          slidingWinLen:   config.mlModelOptions.slidingWinLen,
-          f0ModelBaseFreq: config.mlModelOptions.f0ModelBaseFreq,
-          f0NormMax:       config.mlModelOptions.f0NormMax
+        for (let i = 0; i < buffers.length; i++) {
+          buffer.set(buffers[i], prevEnd)
+          prevEnd += buffers[i].length
         }
-      )
-    ))
-    .then(() => {
-      postMessage(id, true, null)
+
+        resolve({
+          fileName: 'sys.dic',
+          data: buffer
+        })
+      })
+      .catch(reject)
     })
-  } catch (e) {
+
+    return Promise.all([...promises, promise])
+  })
+  .then((files) => (
+    engine.loadOpenjlabelDict(files)
+  ))
+  .then(() => (
+    engine.loadMlModels(
+      {
+        duration: new URL('duration/model.json', config.mlModelsDirURL).href,
+        f0:       new URL('f0/model.json',       config.mlModelsDirURL).href,
+        volume:   new URL('volume/model.json',   config.mlModelsDirURL).href
+      },
+      {
+        slidingWinLen:   config.mlModelOptions.slidingWinLen,
+        f0ModelBaseFreq: config.mlModelOptions.f0ModelBaseFreq,
+        f0NormMax:       config.mlModelOptions.f0NormMax
+      }
+    )
+  ))
+  .then(() => {
+    postMessage(id, true, null)
+  })
+  .catch((e) => {
     console.error(e)
     postMessage(id, false, e)
     clearCacheFiles()
-  }
+  })
 }
 
 function loadDict (id: string, dict: schemata.OptiDict) {
@@ -296,31 +295,29 @@ function clearDict (id: string) {
 }
 
 function analyzeText (id: string, text: string) {
-  try {
-    engine.analyzeText(text)
-    .then((analyzed) => {
-      postMessage(id, true, analyzed)
-    })
-  } catch (e) {
+  engine.analyzeText(text)
+  .then((analyzed) => {
+    postMessage(id, true, analyzed)
+  })
+  .catch((e) => {
     console.error(e)
     postMessage(id, false, e)
-  }
+  })
 }
 
 function synthVoice (id: string, data: SynthData) {
-  try {
-    engine.synthesizeVoice(
-      data.analyzedData,
-      speakers[data.speakerId],
-      data.config
-    )
-    .then((wav) => {
-      postMessage(id, true, wav)
-    })
-  } catch (e) {
+  engine.synthesizeVoice(
+    data.analyzedData,
+    speakers[data.speakerId],
+    data.config
+  )
+  .then((wav) => {
+    postMessage(id, true, wav)
+  })
+  .catch((e) => {
     console.error(e)
     postMessage(id, false, e)
-  }
+  })
 }
 
 function postMessage (id: string | null, success: boolean, data: any) {
