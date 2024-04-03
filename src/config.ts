@@ -9,7 +9,7 @@ export default {
   qa: qa() as unknown as string,
   qaUrl: 'https://github.com/KoharuYuzuki/PoinoTalk/blob/main/Q&A.txt',
   openjlabelDictDirURL: 'https://cdn.jsdelivr.net/gh/KoharuYuzuki/koharuyuzuki.github.io/poinotalk/dict/open_jtalk_dic_utf_8-1.11/',
-  mlModelsDirURL: 'https://cdn.jsdelivr.net/gh/KoharuYuzuki/koharuyuzuki.github.io/poinotalk/model/v1.1.1/',
+  mlModelsDirURL: 'https://cdn.jsdelivr.net/gh/KoharuYuzuki/koharuyuzuki.github.io/poinotalk/model/v1.2.0/',
   mlModelOptions: {
     slidingWinLen:   3,
     f0ModelBaseFreq: 400,
