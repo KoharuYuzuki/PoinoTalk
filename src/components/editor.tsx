@@ -624,6 +624,12 @@ export default defineComponent({
       this.playNextVoice()
     })
 
+    this.player.addEventListener('pause', () => {
+      if (this.player.currentTime != this.player.duration) {
+        this.playNextVoice()
+      }
+    })
+
     this.worker.addEventListener('message', (event) => {
       if (event.data.id === null) {
         console.error(event.data.data)
