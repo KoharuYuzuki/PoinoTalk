@@ -17,7 +17,7 @@ export function dispatchEvent (type: string, detail?: any) {
 
 export function decorationSynthConfigNumber (number: number) {
   const rounded = Math.round(number * 10) / 10
-  return `${rounded}.0`.slice(0, 3)
+  return `${rounded}.0`.slice(0, 3).replace(new RegExp('\\.$'), '')
 }
 
 export function decorationAccent (accent: 'high' | 'low') {
@@ -27,7 +27,7 @@ export function decorationAccent (accent: 'high' | 'low') {
 export function decorationLengths (numbers: number[]) {
   const number = sum(numbers)
   const rounded = Math.round(number * 100) / 100
-  return `${rounded}.0`.slice(0, 4)
+  return `${rounded}.0`.slice(0, 4).replace(new RegExp('\\.$'), '')
 }
 
 export function downloadFile (fileName: string, url: string) {
