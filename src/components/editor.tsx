@@ -373,7 +373,7 @@ export default defineComponent({
 
         this.clearEngineUserDict()
         .then(() => this.loadUserDictIntoEngine())
-        .catch((_) => {})
+        .catch(console.error)
       },
       deep: true
     },
@@ -446,7 +446,7 @@ export default defineComponent({
             return data
           })
         })
-        .catch((_) => {})
+        .catch(console.error)
       )
     })
 
@@ -467,7 +467,7 @@ export default defineComponent({
         this.enginePromise = (
           this.enginePromise
           .then(() => this.playVoice(this.voiceCache[found.id], prioritize))
-          .catch((_) => {})
+          .catch(console.error)
         )
         return
       }
@@ -493,7 +493,7 @@ export default defineComponent({
           this.voiceCache[found.id] = url
           this.playVoice(url, prioritize)
         })
-        .catch((_) => {})
+        .catch(console.error)
       )
     })
 
@@ -525,7 +525,7 @@ export default defineComponent({
         this.enginePromise = (
           this.enginePromise
           .then(() => downloadFile(fileName, this.voiceCache[textData.id]))
-          .catch((_) => {})
+          .catch(console.error)
         )
         return
       }
@@ -551,7 +551,7 @@ export default defineComponent({
           this.voiceCache[textData.id] = url
           downloadFile(fileName, url)
         })
-        .catch((_) => {})
+        .catch(console.error)
       )
     })
 
@@ -656,7 +656,7 @@ export default defineComponent({
       dispatchEvent('engine:ready')
       this.loadUserDictIntoEngine()
     })
-    .catch((_) => {})
+    .catch(console.error)
   },
   render() {
     return (
