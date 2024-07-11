@@ -254,8 +254,7 @@ function init (id: string) {
     engine.loadMlModels(
       {
         duration: new URL('duration/model.json', config.mlModelsDirURL).href,
-        f0:       new URL('f0/model.json',       config.mlModelsDirURL).href,
-        volume:   new URL('volume/model.json',   config.mlModelsDirURL).href
+        f0:       new URL('f0/model.json',       config.mlModelsDirURL).href
       },
       {
         slidingWinLen:   config.mlModelOptions.slidingWinLen,
