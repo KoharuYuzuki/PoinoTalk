@@ -6,7 +6,7 @@ import { checkType, uint8ArrayToBase64, base64ToUint8Array } from './utils'
 import config from './config'
 
 const engine = new PoinoTalkEngine()
-const speakers = engine.getSpeakers()
+const speakers = PoinoTalkEngine.getSpeakers()
 
 const storage = createStorage({
   driver: indexedDbDriver({
