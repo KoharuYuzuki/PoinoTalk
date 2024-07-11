@@ -10,12 +10,8 @@
     "typescript": "^5.4.2"
   },
   "dependencies": {
-    "aws-sdk": "https://gitpkg.now.sh/KoharuYuzuki/dummy-modules/aws-sdk?main",
-    "child_process": "https://gitpkg.now.sh/KoharuYuzuki/dummy-modules/child_process?main",
     "idb-keyval": "^6.2.1",
-    "mock-aws-s3": "https://gitpkg.now.sh/KoharuYuzuki/dummy-modules/mock-aws-s3?main",
     "module": "https://gitpkg.now.sh/KoharuYuzuki/dummy-modules/module?main",
-    "nock": "https://gitpkg.now.sh/KoharuYuzuki/dummy-modules/nock?main",
     "openjlabel": "github:KoharuYuzuki/OpenJLabel.ts#v1.1.0",
     "pathe": "^1.1.2",
     "poinotalk-engine": "github:KoharuYuzuki/PoinoTalkEngine#v1.2.0",
