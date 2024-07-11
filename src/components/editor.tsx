@@ -117,7 +117,7 @@ export default defineComponent({
     },
     checkBackend() {
       return new Promise<boolean>((resolve, reject) => {
-        const id = crypto.randomUUID()
+        const id = uuid()
 
         window.addEventListener(id, (event) => {
           const result = (event as CustomEvent).detail as WorkerResult
@@ -143,7 +143,7 @@ export default defineComponent({
     },
     initEngine() {
       return new Promise<void>((resolve, reject) => {
-        const id = crypto.randomUUID()
+        const id = uuid()
 
         window.addEventListener(id, (event) => {
           const result = (event as CustomEvent).detail as WorkerResult
@@ -179,7 +179,7 @@ export default defineComponent({
           return
         }
 
-        const id = crypto.randomUUID()
+        const id = uuid()
 
         window.addEventListener(id, (event) => {
           const result = (event as CustomEvent).detail as WorkerResult
@@ -206,7 +206,7 @@ export default defineComponent({
     },
     clearEngineUserDict() {
       return new Promise<void>((resolve, reject) => {
-        const id = crypto.randomUUID()
+        const id = uuid()
 
         window.addEventListener(id, (event) => {
           const result = (event as CustomEvent).detail as WorkerResult
@@ -233,7 +233,7 @@ export default defineComponent({
     },
     analyzeText(text: string) {
       return new Promise<schemata.KanaData[]>((resolve, reject) => {
-        const id = crypto.randomUUID()
+        const id = uuid()
 
         window.addEventListener(id, (event) => {
           const result = (event as CustomEvent).detail as WorkerResult
@@ -260,7 +260,7 @@ export default defineComponent({
     },
     synthVoice(data: SynthData) {
       return new Promise<string>((resolve, reject) => {
-        const id = crypto.randomUUID()
+        const id = uuid()
 
         window.addEventListener(id, (event) => {
           const result = (event as CustomEvent).detail as WorkerResult

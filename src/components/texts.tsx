@@ -2,7 +2,7 @@ import { defineComponent, toRaw } from 'vue'
 import type { PropType } from 'vue'
 import type { StorageInstance, TextData } from './storage'
 import { schemata } from 'poinotalk-engine'
-import { dispatchEvent } from '../utils'
+import { uuid, dispatchEvent } from '../utils'
 
 export default defineComponent({
   data(): {
@@ -86,7 +86,7 @@ export default defineComponent({
       if ((this.storage === null) || (this.storage.project === null)) return
 
       const selectedIndex = this.storage.project.textData.findIndex((data) => data.id === this.textDataId)
-      const id = crypto.randomUUID()
+      const id = uuid()
 
       const textData: TextData = {
         id:          id,
