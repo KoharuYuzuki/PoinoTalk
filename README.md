@@ -19,12 +19,6 @@ $ bun install
 $ bun run build.ts
 ```
 
-### Tips
-`bun install` で `aws-sdk`, `child_process`, `mock-aws-s3`, `module`, `nock` などのインストールに失敗する場合は、以下のコマンドを実行してから再度 `bun install` を実行してください  
-```
-$ bun run install-dummy.ts
-```
-
 ## ライセンス
 PoinoTalk v1.1.0 及び PoinoTalk v1.1.0 で合成された音声は、PoinoTalk Licence 1.0 が適用されます  
 詳細は LICENSE ファイルをご参照ください  
