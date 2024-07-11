@@ -2,7 +2,7 @@ Q. 動作環境は?
 A. 以下の環境でご利用ください
 
 - WindowsまたはmacOS
-- Google Chrome (iOSのChromeや他のブラウザは動作しない可能性があります)
+- Google Chrome、Firefox、Sonoma以降のSafari (他のブラウザでは動作しない可能性があります)
 - WebGPUまたはWebGLが有効 (ウェブワーカー上で利用できる必要があります)
 - 900*700ピクセル以上の表示領域
 
