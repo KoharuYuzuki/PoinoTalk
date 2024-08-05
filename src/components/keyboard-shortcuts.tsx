@@ -35,12 +35,12 @@ export default defineComponent({
       filtered.forEach((key) => {
         const shortcut = this.keyboardShortcuts[key]
 
-        const CtrlOrMeta = event.ctrlKey || event.metaKey
+        const ctrlOrMeta = event.ctrlKey || event.metaKey
         const alt        = event.altKey
         const shift      = event.shiftKey
 
         if (
-          (CtrlOrMeta === false) ||
+          (ctrlOrMeta === false) ||
           (alt !== shortcut.alt) ||
           (shift !== shortcut.shift)
         ) return
