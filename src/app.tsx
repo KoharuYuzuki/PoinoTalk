@@ -53,6 +53,15 @@ const component = defineComponent({
     closeEngineInitDialog() {
       const engineInitDialog = this.$refs.engineInitDialog as EngineInitDialogInstance
       engineInitDialog.close()
+    },
+    startDialogEscapeBlocker() {
+      window.addEventListener('keydown', (event) => {
+        if (event.code !== 'Escape') return
+
+        if (document.querySelectorAll('dialog[open]').length > 0) {
+          event.preventDefault()
+        }
+      })
     }
   },
   mounted() {
@@ -67,6 +76,7 @@ const component = defineComponent({
       this.closeEngineInitDialog()
     }, { once: true })
 
+    this.startDialogEscapeBlocker()
     this.openEngineInitDialog()
     this.loadSettings()
   },
