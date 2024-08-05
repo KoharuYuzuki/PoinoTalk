@@ -68,82 +68,82 @@ export interface DataForExport {
 
 export const keyboardShortcutsDefault: KeyboardShortcuts = {
   'new': {
-    code:       'KeyJ',
-    alt:        false,
-    shift:      false,
-    desc:       'プロジェクト及びテキストを追加'
+    code:  'KeyJ',
+    alt:   false,
+    shift: false,
+    desc:  'プロジェクト及びテキストを追加'
   },
   'settings':      {
-    code:       'KeyI',
-    alt:        false,
-    shift:      false,
-    desc:       '設定を開く'
+    code:  'KeyI',
+    alt:   false,
+    shift: false,
+    desc:  '設定を開く'
   },
   'help': {
-    code:       'KeyH',
-    alt:        false,
-    shift:      false,
-    desc:       'ヘルプを開く'
+    code:  'KeyH',
+    alt:   false,
+    shift: false,
+    desc:  'ヘルプを開く'
   },
   'undo': {
-    code:       'KeyZ',
-    alt:        false,
-    shift:      false,
-    desc:       '元に戻す'
+    code:  'KeyZ',
+    alt:   false,
+    shift: false,
+    desc:  '元に戻す'
   },
   'redo': {
-    code:       'KeyY',
-    alt:        false,
-    shift:      false,
-    desc:       'やり直す'
+    code:  'KeyY',
+    alt:   false,
+    shift: false,
+    desc:  'やり直す'
   },
   'projects': {
-    code:       'KeyL',
-    alt:        false,
-    shift:      false,
-    desc:       'プロジェクト一覧に戻る'
+    code:  'KeyL',
+    alt:   false,
+    shift: false,
+    desc:  'プロジェクト一覧に戻る'
   },
   'play': {
-    code:       'Space',
-    alt:        false,
-    shift:      false,
-    desc:       '音声の再生'
+    code:  'Space',
+    alt:   false,
+    shift: false,
+    desc:  '音声の再生'
   },
   'play:all': {
-    code:       'Space',
-    alt:        false,
-    shift:      true,
-    desc:       '音声の連続再生'
+    code:  'Space',
+    alt:   false,
+    shift: true,
+    desc:  '音声の連続再生'
   },
   'save': {
-    code:       'KeyS',
-    alt:        false,
-    shift:      false,
-    desc:       '音声の保存'
+    code:  'KeyS',
+    alt:   false,
+    shift: false,
+    desc:  '音声の保存'
   },
   'save:all': {
-    code:       'KeyS',
-    alt:        false,
-    shift:      true,
-    desc:       '音声の一括保存'
+    code:  'KeyS',
+    alt:   false,
+    shift: true,
+    desc:  '音声の一括保存'
   },
   'dict': {
-    code:       'KeyD',
-    alt:        false,
-    shift:      false,
-    desc:       '辞書一覧を開く'
+    code:  'KeyD',
+    alt:   false,
+    shift: false,
+    desc:  '辞書一覧を開く'
   },
   'preset': {
-    code:       'KeyP',
-    alt:        false,
-    shift:      false,
-    desc:       'プリセット一覧を開く'
+    code:  'KeyP',
+    alt:   false,
+    shift: false,
+    desc:  'プリセット一覧を開く'
   },
   'remove': {
-    code:       'KeyK',
-    alt:        false,
-    shift:      true,
-    desc:       'テキストを削除'
+    code:  'KeyK',
+    alt:   false,
+    shift: true,
+    desc:  'テキストを削除'
   }
 } as const
 
