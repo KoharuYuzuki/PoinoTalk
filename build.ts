@@ -14,8 +14,8 @@ await $`cp -f ./src/index.html ${join(buildDir, 'index.html')}`
 
 // copy assets
 await $`mkdir -p ${join(buildDir, 'assets')}`
-await $`cp -f ./assets/*.svg ./build/assets`
-await $`cp -f ./assets/*.png ./build/assets`
+await $`cp -f ./assets/*.svg ${join(buildDir, 'assets')}`
+await $`cp -f ./assets/*.png ${join(buildDir, 'assets')}`
 
 // copy openjlabel.wasm
 await $`cp -f ./node_modules/openjlabel/wasm/openjlabel.wasm ${join(buildDir, 'openjlabel.wasm')}`
