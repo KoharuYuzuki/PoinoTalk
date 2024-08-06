@@ -20,7 +20,7 @@ $ bun run build.ts
 ```
 
 ## ライセンス
-PoinoTalk v1.2.0 及び PoinoTalk v1.2.0 で合成された音声は、PoinoTalk Licence 1.0 が適用されます  
+PoinoTalk v1.2.1 及び PoinoTalk v1.2.1 で合成された音声は、PoinoTalk Licence 1.0 が適用されます  
 詳細は LICENSE ファイルをご参照ください  
 不明な点についてはライセンスQ&Aをご参照ください  
 
