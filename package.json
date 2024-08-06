@@ -14,7 +14,7 @@
     "module": "https://gitpkg.now.sh/KoharuYuzuki/dummy-modules/module?main",
     "openjlabel": "github:KoharuYuzuki/OpenJLabel.ts#v1.1.0",
     "pathe": "^1.1.2",
-    "poinotalk-engine": "github:KoharuYuzuki/PoinoTalkEngine#v1.2.0",
+    "poinotalk-engine": "github:KoharuYuzuki/PoinoTalkEngine#v1.2.1",
     "tailwindcss": "^3.4.4",
     "unstorage": "^1.10.2",
     "vue": "^3.4.31",
